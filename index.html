@@ -3,30 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zeabur导航 - 极简灵动风格</title>
+    <title>晨曦导航 - 极简灵动风格</title>
     
-    <!-- Zeabur优化配置 -->
-    <meta name="zeabur:environment" content="production">
+    <!-- 网站标志 (Favicon) -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="manifest" href="assets/site.webmanifest">
     
-    <style>
-        /* 保持原有样式，仅作路径适配调整 */
-        body {
-            background: url('./assets/backgrounds/kumtanom.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-        
-        /* 其他样式保持不变... */
-    </style>
+    <!-- 外部样式表 -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 页面内容与原始代码保持一致，仅需修改部署信息 -->
-    <div class="footer">
-        <p>🌱 部署在 Zeabur Platform | 📦 代码托管在 GitHub</p>
+    <div class="container">
+        <div class="header">
+            <h1>晨曦🌿导航</h1>
+            <p>清爽自然 · 回归本质</p>
+        </div>
+
+        <!-- 天气插件 -->
+        <!-- 桌面端圆形天气插件 -->
+        <div class="circular-weather-widget">
+            <div class="weather-circle">
+                <div class="weather-content">
+                    <div class="weather-icon">⛅</div>
+                    <div class="weather-temp">24°C</div>
+                    <div class="weather-location">北京市</div>
+                </div>
+            </div>
+            <div class="weather-details">
+                <div class="details-arrow"></div>
+                <div class="details-condition">多云</div>
+                <div class="details-grid">
+                    <div class="details-item">湿度: 65%</div>
+                    <div class="details-item right">风速: 12 km/h</div>
+                    <div class="details-item">温度: 20～28°C</div>
+                    <div class="details-item right">空气: 良</div>
+                </div>
+                <div class="details-update">更新: 14:30</div>
+            </div>
+        </div>
+
+        <!-- 移动端条形天气插件 -->
+        <div class="weather-bar">
+            <div class="bar-left">
+                <div class="bar-icon">⛅</div>
+                <div class="bar-info">
+                    <div class="bar-temp">24°C</div>
+                    <div class="bar-location">北京市</div>
+                </div>
+            </div>
+            <div class="bar-details">多云 | 湿度: 65%</div>
+        </div>
+
+        <!-- 移动端详情面板 -->
+        <div class="mobile-details">
+            <button class="mobile-close">×</button>
+            <div class="mobile-details-content">
+                <div class="mobile-icon">⛅</div>
+                <div class="mobile-condition">多云</div>
+                <div class="mobile-info">
+                    <div class="mobile-info-item">
+                        <div class="mobile-info-label">温度</div>
+                        <div class="mobile-info-value">24°C</div>
+                    </div>
+                    <div class="mobile-info-item">
+                        <div class="mobile-info-label">湿度</div>
+                        <div class="mobile-info-value">65%</div>
+                    </div>
+                    <div class="mobile-info-item">
+                        <div class="mobile-info-label">风速</div>
+                        <div class="mobile-info-value">12 km/h</div>
+                    </div>
+                    <div class="mobile-info-item">
+                        <div class="mobile-info-label">空气质量</div>
+                        <div class="mobile-info-value">良</div>
+                    </div>
+                </div>
+                <div style="font-size: 12px; opacity: 0.7;">更新: 14:30</div>
+            </div>
+        </div>
+
+        <!-- 时间日期显示 -->
+        <div class="datetime-container">
+            <div class="datetime-display">
+                <div id="currentDate">正在加载日期...</div>
+                <div id="currentTime">正在加载时间...</div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="在必应中搜索...">
+                <button class="search-button" id="searchButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 分类直达导航栏 -->
+        <div class="category-nav" id="categoryNav"></div>
+
+        <div class="categories" id="categoriesContainer">
+            <!-- 类别将通过JavaScript动态加载 -->
+        </div>
+
+        <div class="footer">
+            <p>🌱 部署在 Zeabur Platform | 📦 代码托管在 GitHub</p>
+        </div>
     </div>
 
+    <!-- 一键回到顶部按钮 -->
+    <button id="backToTopBtn" title="回到顶部">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 19V7.83l4.88 4.88c.39.39 1.03.39 1.42 0 .39-.39.39-1.02 0-1.41L12.71 4.71a.996.996 0 0 0-1.41 0L4.71 11.3c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L11 7.83V19c0 .55.45 1 1 1s1-.45 1-1z"/>
+        </svg>
+    </button>
+
     <script>
-        // JavaScript代码保持不变，确保功能完整
-        // 时间日期、搜索、天气插件等功能代码...
+        // 时间日期更新函数 - 优化了秒数显示效果
+        function updateDateTime() {
+            const now = new Date();
+            
+            // 格式化日期
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const weekday = weekdays[now.getDay()];
+            
+            // 格式化时间
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            // 更新显示 - 秒数添加特殊样式
+            document.getElementById('currentDate').textContent = `${year}年${month}月${day}日 ${weekday}`;
+            document.getElementById('currentTime').innerHTML = `${hours}:${minutes}:<span class="seconds">${seconds}</span>`;
+            
+            // 每秒闪烁效果
+            const secondsSpan = document.querySelector('#currentTime .seconds');
+            if (secondsSpan) {
+                secondsSpan.style.opacity = (now.getSeconds() % 2 === 0) ? '1' : '0.9';
+            }
+        }
+
+        // 天气图标映射
+        const weatherIcons = {
+            '晴': '☀️',
+            '多云': '⛅',
+            '阴': '☁️',
+            '小雨': '🌦️',
+            '中雨': '🌧️',
+            '大雨': '🌧️',
+            '暴雨': '⛈️',
+            '雷': '⚡',
+            '雪': '❄️',
+            '雾': '🌫️',
+            '霾': '🌫️',
+            '未知': '🌤️'
+        };
+
+        // 检测是否为移动设备
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                (window.innerWidth <= 768);
+        }
+
+        // 模拟天气数据
+        const mockWeatherData = {
+            location: '北京市',
+            condition: '多云',
+            temperature: '24°C',
+            tempRange: '20～28°C',
+            airQuality: '良 (35)',
+            humidity: '65%',
+            windSpeed: '12 km/h',
+            icon: '⛅',
+            color: '#94a3b8',
+            timestamp: Date.now()
+        };
+
+        // 初始化天气插件
+        function initWeatherPlugin() {
+            // 获取天气数据（这里使用模拟数据）
+            const weatherData = mockWeatherData;
+            
+            // 更新桌面端圆形插件
+            updateCircularWidget(weatherData);
+            
+            // 更新移动端条形插件
+            updateBarWidget(weatherData);
+            
+            // 添加交互事件
+            addInteractions(weatherData);
+        }
+
+        // 更新桌面端圆形插件
+        function updateCircularWidget(weatherData) {
+            const circularWidget = document.querySelector('.circular-weather-widget');
+            const circle = circularWidget.querySelector('.weather-circle');
+            const icon = circularWidget.querySelector('.weather-icon');
+            const temp = circularWidget.querySelector('.weather-temp');
+            const location = circularWidget.querySelector('.weather-location');
+            const details = circularWidget.querySelector('.weather-details');
+            const condition = details.querySelector('.details-condition');
+            const humidity = details.querySelector('.details-item:nth-child(1)');
+            const wind = details.querySelector('.details-item:nth-child(2)');
+            const tempRange = details.querySelector('.details-item:nth-child(3)');
+            const airQuality = details.querySelector('.details-item:nth-child(4)');
+            const updateTime = details.querySelector('.details-update');
+            
+            // 更新内容
+            circle.style.borderColor = weatherData.color;
+            icon.textContent = weatherData.icon;
+            temp.textContent = weatherData.temperature;
+            location.textContent = weatherData.location;
+            
+            // 更新详情
+            condition.textContent = weatherData.condition;
+            humidity.textContent = `湿度: ${weatherData.humidity}`;
+            wind.textContent = `风速: ${weatherData.windSpeed}`;
+            tempRange.textContent = `温度: ${weatherData.tempRange}`;
+            airQuality.textContent = `空气: ${weatherData.airQuality.split(' ')[0]}`;
+            
+            const updateDate = new Date(weatherData.timestamp);
+            updateTime.textContent = `更新: ${updateDate.getHours().toString().padStart(2, '0')}:${updateDate.getMinutes().toString().padStart(2, '0')}`;
+        }
+
+        // 更新移动端条形插件
+        function updateBarWidget(weatherData) {
+            const barWidget = document.querySelector('.weather-bar');
+            const icon = barWidget.querySelector('.bar-icon');
+            const temp = barWidget.querySelector('.bar-temp');
+            const location = barWidget.querySelector('.bar-location');
+            const details = barWidget.querySelector('.bar-details');
+            
+            // 更新内容
+            icon.textContent = weatherData.icon;
+            temp.textContent = weatherData.temperature;
+            location.textContent = weatherData.location;
+            details.textContent = `${weatherData.condition} | 湿度: ${weatherData.humidity}`;
+        }
+
+        // 添加交互事件
+        function addInteractions(weatherData) {
+            const circularWidget = document.querySelector('.circular-weather-widget');
+            const circle = circularWidget.querySelector('.weather-circle');
+            const details = circularWidget.querySelector('.weather-details');
+            
+            const barWidget = document.querySelector('.weather-bar');
+            const mobileDetails = document.querySelector('.mobile-details');
+            const closeButton = mobileDetails.querySelector('.mobile-close');
+            
+            // 桌面端悬停效果
+            circle.addEventListener('mouseenter', () => {
+                details.classList.add('active');
+                circle.style.transform = 'scale(1.05)';
+                circle.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.25)';
+            });
+            
+            circle.addEventListener('mouseleave', () => {
+                details.classList.remove('active');
+                circle.style.transform = 'scale(1)';
+                circle.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+            });
+            
+            // 移动端点击效果
+            barWidget.addEventListener('click', () => {
+                mobileDetails.classList.add('active');
+            });
+            
+            closeButton.addEventListener('click', () => {
+                mobileDetails.classList.remove('active');
+            });
+            
+            // 点击圆形刷新
+            circle.addEventListener('click', () => {
+                // 模拟刷新
+                circle.classList.add('loading');
+                setTimeout(() => {
+                    circle.classList.remove('loading');
+                    // 这里可以添加实际的刷新逻辑
+                    console.log('天气数据已刷新！');
+                }, 1000);
+            });
+        }
+
+        // 执行搜索功能
+        function performSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                window.open(`https://www.bing.com/search?q=${encodeURIComponent(searchTerm)}`, '_blank');
+                searchInput.value = '';
+            }
+        }
+
+        // 渲染单个链接项（包含介绍和本地图标）
+        function renderLinkItem(link) {
+            return `
+                <a href="${link.url}" class="link-item" target="_blank" title="${link.name}: ${link.desc}">
+                    <div class="link-icon-container">
+                        <img src="${link.icon}" alt="${link.name}" class="link-icon" onerror="this.style.display='none'">
+                    </div>
+                    <div class="link-content">
+                        <div class="link-text">${link.name}</div>
+                        <div class="link-desc">${link.desc}</div>
+                    </div>
+                </a>
+            `;
+        }
+
+        // 渲染导航类别
+        function renderCategories(navData) {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = '';
+
+            navData.categories.forEach(category => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category';
+                categoryDiv.id = `category-${category.id}`; // 添加ID用于锚点跳转
+                
+                let linksHtml = '';
+                category.links.forEach(link => {
+                    linksHtml += renderLinkItem(link);
+                });
+
+                categoryDiv.innerHTML = `
+                    <h2>${category.icon} ${category.name}</h2>
+                    <div class="links">${linksHtml}</div>
+                `;
+                
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        // 渲染分类直达导航栏
+        function renderCategoryNav(navData) {
+            const navContainer = document.getElementById('categoryNav');
+            let navHtml = '';
+            
+            navData.categories.forEach(category => {
+                navHtml += `
+                    <a href="#category-${category.id}" data-category="${category.id}">
+                        ${category.icon} ${category.name}
+                    </a>
+                `;
+            });
+            
+            navContainer.innerHTML = navHtml;
+            
+            // 添加点击事件监听器
+            navContainer.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 移除所有 active 类
+                    navContainer.querySelectorAll('a').forEach(a => {
+                        a.classList.remove('active');
+                    });
+                    
+                    // 为当前点击的添加 active 类
+                    this.classList.add('active');
+                    
+                    // 获取目标元素并滚动到该位置
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        // 计算滚动位置（考虑固定头部高度）
+                        const offsetTop = targetElement.offsetTop - 100;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // 搜索功能 - 集成必应搜索
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            searchButton.addEventListener('click', performSearch);
+        }
+
+        // 一键回到顶部功能
+        function setupBackToTop() {
+            const button = document.getElementById('backToTopBtn');
+            
+            // 滚动事件监听
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    button.classList.add('visible');
+                } else {
+                    button.classList.remove('visible');
+                }
+            });
+            
+            // 点击事件
+            button.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化时间日期显示
+            updateDateTime();
+            setInterval(updateDateTime, 1000); // 每秒更新一次
+            
+            // 初始化天气插件
+            initWeatherPlugin();
+            
+            // 加载导航数据并渲染页面
+            fetch('nav-data.json')
+                .then(response => response.json())
+                .then(navData => {
+                    renderCategories(navData);
+                    renderCategoryNav(navData);
+                })
+                .catch(error => {
+                    console.error('加载导航数据失败:', error);
+                    document.getElementById('categoriesContainer').innerHTML = '<p style="text-align:center;color:white;">导航数据加载失败，请检查网络连接</p>';
+                });
+            
+            setupSearch();
+            setupBackToTop(); // 初始化回顶功能
+            
+            // 添加悬停效果
+            document.querySelectorAll('.category').forEach(cat => {
+                cat.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                cat.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
     </script>
 </body>
 </html>
