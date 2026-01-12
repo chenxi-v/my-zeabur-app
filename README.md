@@ -1,6 +1,6 @@
 # my-zeabur-app
 个人网址导航页
-、、、
+```
 zeabur-navigation/
 ├── index.html              # 主页面（已精简）
 ├── style.css               # 独立样式文件
@@ -10,5 +10,4 @@ zeabur-navigation/
 │   ├── backgrounds/       # 背景图片目录
 │   └── icons/            # 网站图标目录
 └── README.md              # 部署说明
-、、、
-
+```
