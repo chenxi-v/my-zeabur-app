@@ -817,7 +817,7 @@
                         <div class="mobile-info-value">良</div>
                     </div>
                 </div>
-                <div style="font-size: 12px; opacity: 0.7;">更新: 14:30</div>
+                <div id="mobile-last-updated" style="font-size: 12px; opacity: 0.7;">更新: 14:30</div>
             </div>
         </div>
 
@@ -919,7 +919,7 @@
             else if (aqi <= 80) aqiLevel = '一般';
             else if (aqi <= 100) aqiLevel = '差';
             else aqiLevel = '严重';
-            airQuality = `${aqiLevel} (${aqi})`;
+            airQuality = `${aqLevel} (${aqi})`;
           }
           
           let windSpeed = 'N/A';
@@ -1313,6 +1313,7 @@
           const humidityValue = mobileDetails.querySelector('.mobile-info-item:nth-child(2) .mobile-info-value');
           const windValue = mobileDetails.querySelector('.mobile-info-item:nth-child(3) .mobile-info-value');
           const airQualityValue = mobileDetails.querySelector('.mobile-info-item:nth-child(4) .mobile-info-value');
+          const lastUpdated = document.getElementById('mobile-last-updated'); // 修改：使用单独的ID来更新移动端时间
           
           // 更新内容
           mobileIcon.textContent = weatherData.icon;
@@ -1321,6 +1322,10 @@
           humidityValue.textContent = weatherData.humidity;
           windValue.textContent = weatherData.windSpeed;
           airQualityValue.textContent = weatherData.airQuality.split(' ')[0];
+          
+          // 更新移动端详情面板的时间
+          const updateDate = new Date(weatherData.timestamp);
+          lastUpdated.textContent = `更新: ${updateDate.getHours().toString().padStart(2, '0')}:${updateDate.getMinutes().toString().padStart(2, '0')}`;
         }
 
         // 添加交互事件
