@@ -29,12 +29,14 @@
 
 ```text
 zeabur-navigation/
-├── index.html             # 主页面（包含css和天气插件）
+├── index.html             # 主页面
 ├── nav-data.json          # 导航数据配置
 ├── zeabur.json            # Zeabur平台配置
 ├── assets/
 │   ├── backgrounds/       # 背景图片目录
 │   └── icons/             # 网站图标目录
+│
+├──WeatherIsland.js        # 天气插件
 └── README.md              # 部署说明
 ```
 
