@@ -58,10 +58,10 @@ nav-data.json
 {
   "开发工具": [
         {
-          "name": "GitLab",
-          "url": "https://gitlab.com",
-          "icon": "assets/icons/gitlab.svg",
-          "desc": "一体化 DevOps 平台，提供完整的 CI/CD 解决方案"
+          "name": "GitHub",
+          "url": "https://github.com",
+          "icon": "assets/icons/github.svg",
+          "desc": "全球最大的代码托管和协作开发平台，支持 Git 版本控制"
         },
   ]
 }
